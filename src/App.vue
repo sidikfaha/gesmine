@@ -1,32 +1,30 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+	<v-app>
+		<v-app-bar app dark>
+			<v-btn text to="/" class="mr-2">
+				<v-icon>mdi-home</v-icon> Accueil
+			</v-btn>
+			<v-btn text :to="{ name: 'New' }"> Plan de tir</v-btn>
+			<v-spacer />
+			<v-btn text color="info" :to="{ name: 'About' }">
+				<v-icon>mdi-information</v-icon>
+			</v-btn>
+		</v-app-bar>
+
+		<v-main style="padding-left: 2em;padding-right: 2em;">
+			<router-view></router-view>
+		</v-main>
+	</v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+	import Vue from "vue";
 
-#nav {
-  padding: 30px;
+	export default Vue.extend({
+		name: "App",
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+		data: () => ({
+			//
+		})
+	});
+</script>
