@@ -12,7 +12,9 @@
 		</v-app-bar>
 
 		<v-main style="padding-left: 2em;padding-right: 2em;">
-			<router-view></router-view>
+			<transition name="slide-fade">
+				<router-view></router-view>
+			</transition>
 		</v-main>
 	</v-app>
 </template>

@@ -6,6 +6,7 @@ import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 const sqlite = require("sqlite3").verbose()
+const db = new sqlite.Database("./db/main.sqlite");
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -81,14 +82,10 @@ if (isDevelopment) {
   }
 }
 
-
-const db = new sqlite.Database("./db/main.sqlite");
-
 ipcMain.on('test-event', (event, args) => {
-	db.run("INSERT INTO cas_continu VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)", args, (err : any) => {
+	db.run("INSERT INTO cas_continu VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?)", args, (err : any) => {
 		err ? event.sender.send('test-reply', err.message)  : event.sender.send('test-reply', 1)
 	})
-	db.close()
 })
 
 ipcMain.on('get-latest', (event) => {
