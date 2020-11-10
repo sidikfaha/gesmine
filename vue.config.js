@@ -2,7 +2,10 @@ module.exports = {
   transpileDependencies: ["vuetify"],
 	pluginOptions: {
 		electronBuilder: {
-			nodeIntegration: true
+			nodeIntegration: true,
+			builderOptions: {
+				extraResources: ['db/main.sqlite']
+			}
 		}
 	}
 };

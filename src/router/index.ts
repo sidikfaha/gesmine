@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter, {RouteConfig} from "vue-router";
-import Home from "../views/Home.vue";
 import "../assets/scss/app.scss"
 
 Vue.use(VueRouter);
@@ -8,8 +7,8 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
 	{
 		path: "/",
-		name: "Home",
-		component: Home
+		name: "home",
+		component: () => import(/* webpackChunkName: "about" */ "../views/Home.vue")
 	},
 	{
 		path: "/about",
@@ -17,21 +16,24 @@ const routes: Array<RouteConfig> = [
 		component: () => import(/* webpackChunkName: "about" */ "../views/About.vue")
 	},
 	{
-		path: "/new",
-		name: "New",
-		component: () => import(/* webpackChunkName: "about" */ "../views/calc/plan-de-tirs/index.vue"),
-		children: [
-			{
-				path: '',
-				name: 'accueil',
-				component: () => import("../views/calc/plan-de-tirs/accueil.vue")
-			},
-			{
-				path: 'premier-cas',
-				name: 'first',
-				component: () => import("../views/calc/plan-de-tirs/chargement-continu.vue")
-			}
-		]
+		path: "/plan-tir",
+		name: "plan-tir",
+		component: () => import(/* webpackChunkName: "about" */ "../views/calc/plan-de-tirs/index.vue")
+	},
+	{
+		path: "/param-calc",
+		name: "param-calc",
+		component: () => import(/* webpackChunkName: "about" */ "../views/calc/param-calc/index.vue")
+	},
+	{
+		path: "/param-chargeuse",
+		name: "param-chargeuse",
+		component: () => import(/* webpackChunkName: "about" */ "../views/calc/param-calc/param-chargeuse.vue")
+	},
+	{
+		path: "/param-camion",
+		name: "param-camion",
+		component: () => import(/* webpackChunkName: "about" */ "../views/calc/param-calc/param-camion.vue")
 	},
 
 ];

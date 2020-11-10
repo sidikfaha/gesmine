@@ -6,7 +6,8 @@ import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 const sqlite = require("sqlite3").verbose()
-const db = new sqlite.Database("./db/main.sqlite");
+const dbDir = isDevelopment ? "./db/main.sqlite" : "./resources/db/main.sqlite"
+const db = new sqlite.Database(dbDir);
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -33,7 +34,7 @@ async function createWindow() {
   } else {
     createProtocol("app");
     // Load the index.html when not in development
-    win.loadURL("app://./index.html");
+    await win.loadURL("app://./index.html");
   }
 }
 
@@ -46,10 +47,10 @@ app.on("window-all-closed", () => {
   }
 });
 
-app.on("activate", () => {
+app.on("activate", async () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  if (BrowserWindow.getAllWindows().length === 0) await createWindow();
 });
 
 // This method will be called when Electron has finished
@@ -64,7 +65,7 @@ app.on("ready", async () => {
       console.error("Vue Devtools failed to install:", e.toString());
     }
   }
-  createWindow();
+  await createWindow();
 });
 
 // Exit cleanly on request from parent process in development mode.
@@ -82,9 +83,11 @@ if (isDevelopment) {
   }
 }
 
-ipcMain.on('test-event', (event, args) => {
-	db.run("INSERT INTO cas_continu VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?)", args, (err : any) => {
-		err ? event.sender.send('test-reply', err.message)  : event.sender.send('test-reply', 1)
+ipcMain.on('save-datas', (event, args) => {
+	let s = ''
+	args.datas.forEach((e: any, i: number) => {  s += i === args.datas.length -1 ? '?' : '?,'  })
+	db.run(`INSERT INTO ${args.table} VALUES (null, ${s})`, args.datas, (err : any) => {
+		err ? event.sender.send('save-reply', err.message)  : event.sender.send('save-reply', 1)
 	})
 })
 

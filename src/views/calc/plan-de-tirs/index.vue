@@ -68,7 +68,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="js">
 	import LoaderItem from "../../../components/LoaderItem";
 	import {ipcRenderer} from "electron"
 	import CcResults from "../../../components/cc-results";
@@ -109,7 +109,7 @@
 				}, 500)
 			},
 			ttt() {
-				ipcRenderer.send('test-event', [
+				ipcRenderer.send('save-datas', {table: 'cas_continu', datas: [
 					this.d.lt,
 					this.d.dt,
 					this.d.b,
@@ -119,9 +119,9 @@
 					this.d.ntpr,
 					this.d.lbi,
 					new Date().getTime()
-				])
+				]})
 
-				ipcRenderer.on('test-reply', (event, args) => {
+				ipcRenderer.on('save-reply', (event, args) => {
 					this.loading = true
 					this.text = args === 1 ? "Donnees enregistrees avec succes !" : args
 					setTimeout(() => {

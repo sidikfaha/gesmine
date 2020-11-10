@@ -59,7 +59,7 @@
 	</div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 	import Vue from "vue"
 	import {ipcRenderer} from "electron"
 	import CcResults from "../components/cc-results.vue"
@@ -114,7 +114,7 @@
 				return this.rows[this.selectedItem]
 			}
 		},
-		mounted(): void {
+		mounted() {
 			ipcRenderer.send('get-latest')
 			ipcRenderer.on('reply:get-latest', (event, args) => {
 				this.rows = args
