@@ -6,9 +6,10 @@
 			</v-btn>
 			<v-btn text class="mr-2" :to="{ name: 'plan-tir' }"> Plan de tir</v-btn>
 			<v-btn text class="mr-2" :to="{ name: 'param-calc' }"> Parametres</v-btn>
+			<v-btn text class="mr-2" :to="{ name: 'prevision-calc' }"> Prévision</v-btn>
 			<v-spacer />
-			<v-btn text color="info" :to="{ name: 'About' }">
-				<v-icon>mdi-information</v-icon>
+			<v-btn text @click="closeApp">
+				<v-icon>mdi-close</v-icon>
 			</v-btn>
 		</v-app-bar>
 
@@ -24,12 +25,18 @@
 
 <script lang="ts">
 	import Vue from "vue";
+	import { ipcRenderer } from "electron"
 
 	export default Vue.extend({
 		name: "App",
 
 		data: () => ({
 			//
-		})
+		}),
+		methods: {
+			closeApp(){
+				ipcRenderer.send('close-app')
+			}
+		}
 	});
 </script>

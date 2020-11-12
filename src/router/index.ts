@@ -35,6 +35,11 @@ const routes: Array<RouteConfig> = [
 		name: "param-camion",
 		component: () => import(/* webpackChunkName: "about" */ "../views/calc/param-calc/param-camion.vue")
 	},
+	{
+		path: "/previcion-calc",
+		name: "prevision calc",
+		component: () => import(/* webpackChunkName: "about" */ "../views/calc/prevision-calc/index.vue")
+	},
 
 ];
 

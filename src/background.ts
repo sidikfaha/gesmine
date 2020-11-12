@@ -97,3 +97,7 @@ ipcMain.on('get-latest', (event) => {
 		event.sender.send('reply:get-latest', rows)
 	})
 })
+
+ipcMain.on('close-app', () => {
+	app.quit();
+})

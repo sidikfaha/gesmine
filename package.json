@@ -1,6 +1,11 @@
 {
-  "name": "gesmine",
-  "version": "0.1.0",
+  "name": "Gesmine",
+	"homepage": "https://github.com/joecamer/gesmine",
+	"author": {
+		"email": "joefaha1@gmail.com",
+		"name": "EIS - Innovation"
+	},
+	"version": "0.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
