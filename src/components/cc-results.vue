@@ -82,7 +82,9 @@
 	export default {
 		name: "cc-results",
 		props: {
-			d: {}
+			d: {
+				lt: 0,
+			}
 		},
 		data() {
 			return {

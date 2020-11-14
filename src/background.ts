@@ -91,8 +91,8 @@ ipcMain.on('save-datas', (event, args) => {
 	})
 })
 
-ipcMain.on('get-latest', (event) => {
-	db.all("select * from cas_continu", (err: any, rows: any) => {
+ipcMain.on('get-latest', (event, table) => {
+	db.all(`select * from ${table}`, (err: any, rows: any) => {
 		if (err) throw err
 		event.sender.send('reply:get-latest', rows)
 	})

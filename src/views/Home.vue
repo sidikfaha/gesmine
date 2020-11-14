@@ -45,8 +45,9 @@
 											</v-list-item-content>
 										</v-list-item>
 									</v-card>
+									<point-graphe :d="selectedRow"/>
 								</v-col>
-								<v-col lg="6">
+								<v-col lg="6" class="py-lg-0 py-6">
 									<cc-results :d="selectedRow" v-if=" selectedRow.lbi === null"></cc-results>
 									<cbi-results v-else :d="selectedRow"></cbi-results>
 								</v-col>
@@ -64,10 +65,11 @@
 	import {ipcRenderer} from "electron"
 	import CcResults from "../components/cc-results.vue"
 	import CbiResults from "../components/cbi-results.vue"
+	import PointGraphe from "../components/PointGraphe.vue"
 
 	export default Vue.extend({
 		name: "Home",
-		components: {CcResults, CbiResults},
+		components: {CcResults, CbiResults, PointGraphe},
 		data() {
 			return {
 				rows: [],
@@ -111,11 +113,11 @@
 		},
 		computed: {
 			selectedRow: function () {
-				return this.rows[this.selectedItem]
-			}
+				return this.rows[this.selectedItem || 0]
+			},
 		},
 		mounted() {
-			ipcRenderer.send('get-latest')
+			ipcRenderer.send('get-latest', 'cas_continu')
 			ipcRenderer.on('reply:get-latest', (event, args) => {
 				this.rows = args
 			})

@@ -35,7 +35,8 @@
 									<v-text-field type="number" label="Nombre de trou par rangé" v-model="d.ntpr"/>
 								</v-col>
 								<v-col md="6" cols="12">
-									<v-text-field type="number" label="Longueur de bourrage intermédiaire" v-model="d.lbi" :disabled="selectItems.indexOf(selectedCase) !== 1"/>
+									<v-text-field type="number" label="Longueur de bourrage intermédiaire" v-model="d.lbi"
+																:disabled="selectItems.indexOf(selectedCase) !== 1"/>
 								</v-col>
 							</v-row>
 							<v-row>
@@ -49,12 +50,13 @@
 									</v-btn>
 								</v-col>
 							</v-row>
+							<point-graphe :d="d" v-if="calculated"/>
 						</v-col>
 						<transition name="fade">
 							<v-col v-if="calculated" cols="12" lg="6">
 								<transition name="slide-fade">
 									<cc-results :d="d" v-if="selectItems.indexOf(selectedCase) === 0"/>
-									<cbi-results :d="d" v-else />
+									<cbi-results :d="d" v-else/>
 								</transition>
 							</v-col>
 						</transition>
@@ -73,10 +75,11 @@
 	import {ipcRenderer} from "electron"
 	import CcResults from "../../../components/cc-results";
 	import CbiResults from "../../../components/cbi-results";
+	import PointGraphe from "../../../components/PointGraphe";
 
 	export default {
 		name: "calc-index",
-		components: {CbiResults, CcResults, LoaderItem},
+		components: {PointGraphe, CbiResults, CcResults, LoaderItem},
 		data() {
 			return {
 				selectItems: ['Chargement continu', 'Chargement avec bourrage intermediaire'],
@@ -109,17 +112,19 @@
 				}, 500)
 			},
 			ttt() {
-				ipcRenderer.send('save-datas', {table: 'cas_continu', datas: [
-					this.d.lt,
-					this.d.dt,
-					this.d.b,
-					this.d.e,
-					this.d.nt,
-					this.d.nr,
-					this.d.ntpr,
-					this.d.lbi,
-					new Date().getTime()
-				]})
+				ipcRenderer.send('save-datas', {
+					table: 'cas_continu', datas: [
+						this.d.lt,
+						this.d.dt,
+						this.d.b,
+						this.d.e,
+						this.d.nt,
+						this.d.nr,
+						this.d.ntpr,
+						this.d.lbi,
+						new Date().getTime()
+					]
+				})
 
 				ipcRenderer.on('save-reply', (event, args) => {
 					this.loading = true
