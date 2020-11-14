@@ -108,7 +108,8 @@
 						t: 'Longueur de bourrage intermédiaire',
 						id: 'lbi'
 					},
-				]
+				],
+				mobile: false
 			}
 		},
 		computed: {
@@ -117,10 +118,12 @@
 			},
 		},
 		mounted() {
-			ipcRenderer.send('get-latest', 'cas_continu')
-			ipcRenderer.on('reply:get-latest', (event, args) => {
-				this.rows = args
-			})
+			if (!this.mobile) {
+				ipcRenderer.send('get-latest', 'cas_continu')
+				ipcRenderer.on('reply:get-latest', (event, args) => {
+					this.rows = args
+				})
+			}
 		}
 	});
 </script>

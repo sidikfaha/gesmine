@@ -19,6 +19,7 @@ async function createWindow() {
   const win = new BrowserWindow({
     width: 1000,
     height: 600,
+		show: false,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -27,6 +28,8 @@ async function createWindow() {
     }
   });
 
+  win.maximize()
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
@@ -34,7 +37,9 @@ async function createWindow() {
   } else {
     createProtocol("app");
     // Load the index.html when not in development
-    await win.loadURL("app://./index.html");
+    win.loadURL("app://./index.html").then(() => {
+    	win.show()
+		});
   }
 }
 

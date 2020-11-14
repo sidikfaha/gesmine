@@ -44,7 +44,7 @@
 									<v-btn :disabled="selectedCase === 0" color="primary" large @click="calc" rounded class="mr-2">
 										Calculer
 									</v-btn>
-									<v-btn :disabled="!calculated" color="green" rounded large class="mr-2" @click="ttt">
+									<v-btn :disabled="!calculated" color="green" rounded large class="mr-2" @click="save">
 										<v-icon>mdi-download</v-icon>
 										Enregistrer
 									</v-btn>
@@ -61,6 +61,11 @@
 							</v-col>
 						</transition>
 					</v-row>
+					<v-row>
+						<div id="content3d" style="width: 500px;height: 500px;">
+
+						</div>
+					</v-row>
 				</div>
 				<v-snackbar v-model="snackbar" :timeout="2000">
 					{{ text }}
@@ -76,6 +81,8 @@
 	import CcResults from "../../../components/cc-results";
 	import CbiResults from "../../../components/cbi-results";
 	import PointGraphe from "../../../components/PointGraphe";
+	import * as THREE from "three/src/Three"
+	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 	export default {
 		name: "calc-index",
@@ -111,7 +118,7 @@
 					this.calculated = true
 				}, 500)
 			},
-			ttt() {
+			save() {
 				ipcRenderer.send('save-datas', {
 					table: 'cas_continu', datas: [
 						this.d.lt,
@@ -134,6 +141,36 @@
 						this.snackbar = true
 					}, 800)
 				})
+			},
+			init() {
+				const scene = new THREE.Scene();
+				const camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
+				const geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
+				const material = new THREE.MeshNormalMaterial();
+				const mesh = new THREE.Mesh( geometry, material );
+				const renderer = new THREE.WebGLRenderer( { antialias: true } );
+				const loader = new GLTFLoader();
+
+				loader.load( 'trou.glb', function ( gltf ) {
+
+					scene.add( gltf.scene );
+
+				}, undefined, function ( error ) {
+
+					console.error( error );
+
+				} );
+				camera.position.z = 1;
+
+				scene.add( mesh );
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+
+				mesh.rotation.x += 0.01;
+				mesh.rotation.y += 0.02;
+
+				renderer.render( scene, camera );
 			}
 		}
 	};
